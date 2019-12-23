@@ -31,6 +31,14 @@ namespace PointOfSaleTerminal.Tests
             Assert.Equal(expectedResult, terminal.CalculateTotal());
         }
 
+        [Fact]
+        public void ScanNonExistingProduct_WithEmptyPricesSet_ExceptionThrown()
+        {
+            var terminal = new Terminal(new Product[0]);
+
+            Assert.Throws<ArgumentException>(() => terminal.Scan("A"));
+        }
+
         private void ScanStringAsChars(Terminal terminal, string productCodes)
         {
             foreach (char ch in productCodes)
