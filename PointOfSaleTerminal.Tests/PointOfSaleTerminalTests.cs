@@ -70,7 +70,6 @@ namespace PointOfSaleTerminal.Tests
             return new DiscountCard(new[]
             {
                 new DiscountModel(9999.0M, 7),
-                new DiscountModel(0.0M, 0),
                 new DiscountModel(2000.0M, 3),
                 new DiscountModel(5000.0M, 5),
                 new DiscountModel(1000.0M, 1)

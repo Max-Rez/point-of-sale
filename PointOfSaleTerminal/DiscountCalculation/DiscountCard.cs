@@ -16,13 +16,11 @@ namespace PointOfSaleTerminal.DiscountCalculation
             _points = discountPoints.OrderByDescending(x => x.DiscountPercent).ToList();
         }
 
-        public int DiscountPercent
+        public int GetDiscountPercent()
         {
-            get
-            {
-                return _points.First(x => x.Amount <= _total).DiscountPercent;
-            }
-            
+            return _total == 0
+                ? _points.First().DiscountPercent
+                : _points.First(x => x.Amount <= _total).DiscountPercent;
         }
 
         public void AddTotal(decimal sum)

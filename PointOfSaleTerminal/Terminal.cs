@@ -32,7 +32,7 @@ namespace PointOfSaleTerminal
 
         public decimal CalculateTotal(DiscountCard discountCard)
         {
-            decimal discountRate = discountCard.DiscountPercent / 100.0M;
+            decimal discountRate = discountCard.GetDiscountPercent() / 100.0M;
             discountCard.AddTotal(DoCalculateTotal());
             return DoCalculateTotal(discountRate);
         }
