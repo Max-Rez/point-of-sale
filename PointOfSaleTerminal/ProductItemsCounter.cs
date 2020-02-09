@@ -6,22 +6,22 @@ namespace PointOfSaleTerminal
 {
     public class ProductItemsCounter
     {
-        private readonly IPriceCalculator priceCalculator;
-        private int productsCount = 0;
+        private readonly IPriceCalculator _priceCalculator;
+        private int _productsCount = 0;
 
         public ProductItemsCounter(IPriceCalculator priceCalculator)
         {
-            this.priceCalculator = priceCalculator;
+            this._priceCalculator = priceCalculator;
         }
 
         public void AddItem()
         {
-            productsCount++;
+            _productsCount++;
         }
 
-        public decimal GetTotalPrice()
+        public decimal GetTotalPrice(decimal discountRate)
         {
-            return priceCalculator.CalculatePrice(productsCount);
+            return _priceCalculator.CalculatePrice(_productsCount, discountRate);
         }
     }
 }

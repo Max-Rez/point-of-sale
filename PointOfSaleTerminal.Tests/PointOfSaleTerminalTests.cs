@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using PointOfSaleTerminal.DiscountCalculation;
 using Xunit;
 
 namespace PointOfSaleTerminal.Tests
 {
     public class PointOfSaleTerminalTests
     {
+
+        private const char DefaultProductCode = 'b';
 
         [Theory]
         [InlineData("", 0.0)]
@@ -37,6 +40,41 @@ namespace PointOfSaleTerminal.Tests
             var terminal = new Terminal(new Product[0]);
 
             Assert.Throws<ArgumentException>(() => terminal.Scan("A"));
+        }
+
+        [Theory]
+        [InlineData(1, 990.0)]
+        [InlineData(2, 970.0)]
+        [InlineData(5, 950.0)]
+        [InlineData(10, 930.0)]
+        public void DiscountRateChanges_WithDefaultDiscountCard_CorrectTotalValue(int productsCount, decimal expectedResult)
+        {
+            var discountCard = CreateDefaultDiscountCard();
+
+            ScanItems(productsCount, discountCard);
+            decimal actualResult = ScanItems(1, discountCard);
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+
+        private decimal ScanItems(int count, DiscountCard discountCard)
+        {
+            var terminal = new Terminal(new ProductsPriceSetBuilder().AddProduct(DefaultProductCode.ToString(), 1000.0M).ToArray());
+            ScanStringAsChars(terminal, new string(DefaultProductCode, count));
+            return terminal.CalculateTotal(discountCard);
+        }
+
+        private DiscountCard CreateDefaultDiscountCard()
+        {
+            return new DiscountCard(new[]
+            {
+                new DiscountModel(9999.0M, 7),
+                new DiscountModel(0.0M, 0),
+                new DiscountModel(2000.0M, 3),
+                new DiscountModel(5000.0M, 5),
+                new DiscountModel(1000.0M, 1)
+            });
         }
 
         private void ScanStringAsChars(Terminal terminal, string productCodes)

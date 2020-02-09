@@ -6,12 +6,15 @@ namespace PointOfSaleTerminal.PriceCalculation
 {
     internal class SingleProductPriceCalculalator : IPriceCalculator
     {
-        private readonly decimal singleProductPrice;
+        private readonly decimal _singleProductPrice;
 
         public SingleProductPriceCalculalator(decimal singleProductPrice)
         {
-            this.singleProductPrice = singleProductPrice;
+            _singleProductPrice = singleProductPrice;
         }
-        public decimal CalculatePrice(int productsCount) => productsCount * singleProductPrice;
+        public decimal CalculatePrice(int productsCount, decimal discountRate)
+        {
+            return productsCount * _singleProductPrice * (1.0M - discountRate);
+        }
     }
 }
